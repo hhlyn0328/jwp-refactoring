@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,28 +37,37 @@ public class MenuServiceTest {
 	@InjectMocks
 	private MenuService menuService;
 
-	private final Long savedMenuGroupId = 1L;
-	private final Long savedProductId = 1L;
-	private final Long savedProduct2Id = 2L;
-	private final Product savedProduct = TestDomainConstructor.productWithId("후라이드치킨", 16000, savedProductId);
-	private final Product savedProduct2 = TestDomainConstructor.productWithId("양념치킨", 16000, savedProduct2Id);
-	private final MenuProduct menuProduct = TestDomainConstructor.menuProduct(null, savedProductId, 1);
-	private final MenuProduct menuProduct2 = TestDomainConstructor.menuProduct(null, savedProduct2Id, 1);
-	private final List<MenuProduct> menuProducts = Arrays.asList(menuProduct, menuProduct2);
+	private static final Long NEW_MENU_ID = 1L;
+	private static final Long SAVED_MENU_GROUP_ID = 1L;
+	private static final Long SAVED_PRODUCT_ID = 1L;
+	private static final Long SAVED_PRODUCT2_ID = 2L;
+	private Product savedProduct;
+	private Product savedProduct2;
+	private MenuProduct menuProduct;
+	private MenuProduct menuProduct2;
+	private List<MenuProduct> menuProducts;
+
+	@BeforeEach
+	void setUp() {
+		savedProduct = TestDomainConstructor.productWithId("후라이드치킨", 16000, SAVED_PRODUCT_ID);
+		savedProduct2 = TestDomainConstructor.productWithId("양념치킨", 16000, SAVED_PRODUCT2_ID);
+		menuProduct = TestDomainConstructor.menuProduct(null, SAVED_PRODUCT_ID, 1);
+		menuProduct2 = TestDomainConstructor.menuProduct(null, SAVED_PRODUCT2_ID, 1);
+		menuProducts = Arrays.asList(menuProduct, menuProduct2);
+	}
 
 	@Test
 	@DisplayName("메뉴를 등록할 수 있다.")
 	void create() {
 		//given
-		Long newMenuId = 1L;
 		String name = "후라이드-양념 콤보";
 		int price = 10000;
-		Menu menu = TestDomainConstructor.menu(name, price, savedMenuGroupId, menuProducts);
-		Menu savedMenu = TestDomainConstructor.menuWithId(name, price, savedMenuGroupId, menuProducts, newMenuId);
-		MenuProduct savedMenuProduct = TestDomainConstructor.menuProductWithSeq(newMenuId, savedProductId, 1, 1L);
-		MenuProduct savedMenuProduct2 = TestDomainConstructor.menuProductWithSeq(newMenuId, savedProduct2Id, 1, 2L);
+		Menu menu = TestDomainConstructor.menu(name, price, SAVED_MENU_GROUP_ID, menuProducts);
+		Menu savedMenu = TestDomainConstructor.menuWithId(name, price, SAVED_MENU_GROUP_ID, menuProducts, NEW_MENU_ID);
+		MenuProduct savedMenuProduct = TestDomainConstructor.menuProductWithSeq(NEW_MENU_ID, SAVED_PRODUCT_ID, 1, 1L);
+		MenuProduct savedMenuProduct2 = TestDomainConstructor.menuProductWithSeq(NEW_MENU_ID, SAVED_PRODUCT2_ID, 1, 2L);
 
-		when(menuGroupDao.existsById(savedMenuGroupId)).thenReturn(true);
+		when(menuGroupDao.existsById(SAVED_MENU_GROUP_ID)).thenReturn(true);
 		when(productDao.findById(anyLong())).thenReturn(Optional.of(savedProduct), Optional.of(savedProduct2));
 		when(menuDao.save(menu)).thenReturn(savedMenu);
 		when(menuProductDao.save(any())).thenReturn(savedMenuProduct, savedMenuProduct2);
@@ -66,17 +76,17 @@ public class MenuServiceTest {
 		Menu result = menuService.create(menu);
 
 		//then
-		assertThat(result.getId()).isEqualTo(newMenuId);
+		assertThat(result.getId()).isEqualTo(NEW_MENU_ID);
 		assertThat(result.getName()).isEqualTo(name);
 		assertThat(result.getPrice().intValue()).isEqualTo(price);
-		assertThat(result.getMenuGroupId()).isEqualTo(savedMenuGroupId);
+		assertThat(result.getMenuGroupId()).isEqualTo(SAVED_MENU_GROUP_ID);
 		assertThat(result.getMenuProducts()).containsExactlyInAnyOrder(savedMenuProduct, savedMenuProduct2);
 	}
 
 	@Test
 	@DisplayName("메뉴 등록 시, 메뉴의 가격이 없으면 IllegalArgumentException을 throw 해야한다.")
 	void createPriceNull() {
-		Menu emptyPriceMenu = TestDomainConstructor.menu("메뉴1", null, savedMenuGroupId, menuProducts);
+		Menu emptyPriceMenu = TestDomainConstructor.menu("메뉴1", null, SAVED_MENU_GROUP_ID, menuProducts);
 
 		//when-then
 		assertThatThrownBy(() -> menuService.create(emptyPriceMenu))
@@ -99,7 +109,7 @@ public class MenuServiceTest {
 	@DisplayName("메뉴 등록 시, 상품이 등록되어있지 않으면 IllegalArgumentException을 throw 해야한다.")
 	void createNotExistProduct() {
 		//given
-		Menu notExistProductMenu = TestDomainConstructor.menu("메뉴1", 10000, savedMenuGroupId, Arrays.asList(mock(MenuProduct.class)));
+		Menu notExistProductMenu = TestDomainConstructor.menu("메뉴1", 10000, SAVED_MENU_GROUP_ID, Arrays.asList(mock(MenuProduct.class)));
 		when(menuGroupDao.existsById(any())).thenReturn(true);
 		when(productDao.findById(any())).thenReturn(Optional.empty());
 
@@ -112,8 +122,8 @@ public class MenuServiceTest {
 	@DisplayName("메뉴 등록 시, 메뉴의 가격이 상품 가격의 합보다 크면 IllegalArgumentException을 throw 해야한다.")
 	void createPriceLessThanZero() {
 		//given
-		Menu greaterThanSumOfProductPriceMenu = TestDomainConstructor.menu("메뉴1", 1000000, savedMenuGroupId, menuProducts);
-		when(menuGroupDao.existsById(savedMenuGroupId)).thenReturn(true);
+		Menu greaterThanSumOfProductPriceMenu = TestDomainConstructor.menu("메뉴1", 1000000, SAVED_MENU_GROUP_ID, menuProducts);
+		when(menuGroupDao.existsById(SAVED_MENU_GROUP_ID)).thenReturn(true);
 		when(productDao.findById(anyLong())).thenReturn(Optional.of(savedProduct), Optional.of(savedProduct2));
 
 		//when-then
@@ -126,9 +136,9 @@ public class MenuServiceTest {
 	void list() {
 		//given
 		MenuProduct mockMenuProduct = mock(MenuProduct.class);
-		Menu menuWithTwoProducts = TestDomainConstructor.menuWithId("메뉴1", 1000, savedMenuGroupId
+		Menu menuWithTwoProducts = TestDomainConstructor.menuWithId("메뉴1", 1000, SAVED_MENU_GROUP_ID
 			, Arrays.asList(mockMenuProduct, mockMenuProduct), 1L);
-		Menu menuWithThreeProducts = TestDomainConstructor.menuWithId("메뉴2", 3000, savedMenuGroupId
+		Menu menuWithThreeProducts = TestDomainConstructor.menuWithId("메뉴2", 3000, SAVED_MENU_GROUP_ID
 			, Arrays.asList(mockMenuProduct, mockMenuProduct, mockMenuProduct), 2L);
 
 		when(menuDao.findAll()).thenReturn(Arrays.asList(menuWithTwoProducts, menuWithThreeProducts));
