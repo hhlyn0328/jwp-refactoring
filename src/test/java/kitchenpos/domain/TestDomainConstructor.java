@@ -89,4 +89,33 @@ public class TestDomainConstructor {
 		tableGroup.setId(id);
 		return tableGroup;
 	}
+
+	public static Order order(Long orderTableId, String orderStatus, LocalDateTime orderedTime, List<OrderLineItem> orderLineItems) {
+		Order order = new Order();
+		order.setOrderTableId(orderTableId);
+		order.setOrderStatus(orderStatus);
+		order.setOrderedTime(orderedTime);
+		order.setOrderLineItems(orderLineItems);
+		return order;
+	}
+
+	public static Order orderWithId(Long orderTableId, String orderStatus, LocalDateTime orderedTime, List<OrderLineItem> orderLineItems, Long id) {
+		Order order = order(orderTableId, orderStatus, orderedTime, orderLineItems);
+		order.setId(id);
+		return order;
+	}
+
+	public static OrderLineItem orderLineItem(Long orderId, Long menuId, long quantity) {
+		OrderLineItem orderLineItem = new OrderLineItem();
+		orderLineItem.setOrderId(orderId);
+		orderLineItem.setMenuId(menuId);
+		orderLineItem.setQuantity(quantity);
+		return orderLineItem;
+	}
+
+	public static OrderLineItem orderLineItemWithSeq(Long orderId, Long menuId, long quantity, Long seq) {
+		OrderLineItem orderLineItem = orderLineItem(orderId, menuId, quantity);
+		orderLineItem.setSeq(seq);
+		return orderLineItem;
+	}
 }
