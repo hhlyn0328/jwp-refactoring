@@ -8,27 +8,15 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import kitchenpos.BaseControllerTest;
 import kitchenpos.domain.Menu;
 import kitchenpos.domain.MenuProduct;
 import kitchenpos.domain.TestDomainConstructor;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@AutoConfigureMockMvc
 @DisplayName("메뉴 Controller 테스트")
-public class MenuRestControllerTest {
-	@Autowired
-	private MockMvc mockMvc;
-
-	@Autowired
-	private ObjectMapper objectMapper;
+public class MenuRestControllerTest extends BaseControllerTest {
 
 	@Test
 	@DisplayName("메뉴를 등록할 수 있다 - 메뉴 등록 후, 등록된 메뉴의 아이디를 포함한 정보를 반환한다.")

@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import kitchenpos.BaseDaoTest;
 import kitchenpos.domain.MenuProduct;
 import kitchenpos.domain.TestDomainConstructor;
 
 @SpringBootTest
-public class MenuProductDaoTest {
+public class MenuProductDaoTest extends BaseDaoTest {
 
 	@Autowired
 	private MenuProductDao menuProductDao;

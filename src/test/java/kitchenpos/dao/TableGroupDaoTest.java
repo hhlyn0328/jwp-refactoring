@@ -11,11 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import kitchenpos.BaseDaoTest;
 import kitchenpos.domain.TableGroup;
 import kitchenpos.domain.TestDomainConstructor;
 
 @SpringBootTest
-public class TableGroupDaoTest {
+public class TableGroupDaoTest extends BaseDaoTest {
 
 	@Autowired
 	private TableGroupDao tableGroupDao;

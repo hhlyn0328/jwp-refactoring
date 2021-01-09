@@ -7,11 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import kitchenpos.BaseDaoTest;
 import kitchenpos.domain.OrderTable;
 import kitchenpos.domain.TestDomainConstructor;
 
 @SpringBootTest
-public class OrderTableDaoTest {
+public class OrderTableDaoTest extends BaseDaoTest {
 
 	@Autowired
 	private OrderTableDao orderTableDao;
