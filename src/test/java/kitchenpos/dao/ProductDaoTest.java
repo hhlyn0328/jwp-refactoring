@@ -26,7 +26,7 @@ public class ProductDaoTest {
 		//given
 		String name = "상품1";
 		int price = 1000;
-		Product product = TestDomainConstructor.product("상품1", 1000);
+		Product product = TestDomainConstructor.product(name, price);
 
 		//when
 		Product savedProduct = productDao.save(product);
@@ -38,7 +38,7 @@ public class ProductDaoTest {
 	}
 
 	@Test
-	@DisplayName("상품 등록 시, 이름이 없으면 IllegalArgumentException을 throw 해야한다.")
+	@DisplayName("상품 등록 시, 이름이 없으면 DataIntegrityViolationException 을 throw 해야한다.")
 	void createWithoutName() {
 		//given
 		Product nameNullProduct = TestDomainConstructor.product(null, 1000);
@@ -49,7 +49,7 @@ public class ProductDaoTest {
 	}
 
 	@Test
-	@DisplayName("상품 등록 시, 가격이 없으면 IllegalArgumentException을 throw 해야한다.")
+	@DisplayName("상품 등록 시, 가격이 없으면 DataIntegrityViolationException 을 throw 해야한다.")
 	void createWithoutPrice() {
 		//given
 		Product priceNullProduct = TestDomainConstructor.product("상품1", null);

@@ -12,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import kitchenpos.dao.MenuGroupDao;
 import kitchenpos.domain.MenuGroup;
-import kitchenpos.domain.Product;
 import kitchenpos.domain.TestDomainConstructor;
 
 @ExtendWith(MockitoExtension.class)
