@@ -42,10 +42,10 @@ public class MenuDaoTest {
 	@DisplayName("메뉴 등록 시, 이름이 없으면 DataIntegrityViolationException 을 throw 해야한다.")
 	void saveWithoutName() {
 		//given
-		Menu emptyNameMenu = TestDomainConstructor.menu(null, 1000, 1L, new ArrayList<>());
+		Menu nullNameMenu = TestDomainConstructor.menu(null, 1000, 1L, new ArrayList<>());
 
 		//when-then
-		assertThatThrownBy(() -> menuDao.save(emptyNameMenu))
+		assertThatThrownBy(() -> menuDao.save(nullNameMenu))
 			.isInstanceOf(DataIntegrityViolationException.class);
 	}
 

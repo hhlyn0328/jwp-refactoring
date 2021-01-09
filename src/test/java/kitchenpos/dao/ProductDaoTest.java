@@ -38,10 +38,10 @@ public class ProductDaoTest {
 	@DisplayName("상품 등록 시, 이름이 없으면 DataIntegrityViolationException 을 throw 해야한다.")
 	void saveWithoutName() {
 		//given
-		Product emptyNameProduct = TestDomainConstructor.product(null, 1000);
+		Product nullNameProduct = TestDomainConstructor.product(null, 1000);
 
 		//when-then
-		assertThatThrownBy(() -> productDao.save(emptyNameProduct))
+		assertThatThrownBy(() -> productDao.save(nullNameProduct))
 			.isInstanceOf(DataIntegrityViolationException.class);
 	}
 

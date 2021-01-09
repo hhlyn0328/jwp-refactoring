@@ -36,10 +36,10 @@ public class MenuGroupDaoTest {
 	@DisplayName("메뉴그룹 등록 시, 이름이 없으면 DataIntegrityViolationException 을 throw 해야한다.")
 	void saveWithoutName() {
 		//given
-		MenuGroup emptyNameMenuGroup = TestDomainConstructor.menuGroup(null);
+		MenuGroup nullNameMenuGroup = TestDomainConstructor.menuGroup(null);
 
 		//when-then
-		assertThatThrownBy(() -> menuGroupDao.save(emptyNameMenuGroup))
+		assertThatThrownBy(() -> menuGroupDao.save(nullNameMenuGroup))
 			.isInstanceOf(DataIntegrityViolationException.class);
 	}
 
