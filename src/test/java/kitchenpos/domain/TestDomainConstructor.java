@@ -1,6 +1,7 @@
 package kitchenpos.domain;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class TestDomainConstructor {
@@ -76,14 +77,15 @@ public class TestDomainConstructor {
 		return orderTable;
 	}
 
-	public static TableGroup tableGroup(List<OrderTable> orderTables) {
+	public static TableGroup tableGroup(List<OrderTable> orderTables, LocalDateTime createdDate) {
 		TableGroup tableGroup = new TableGroup();
 		tableGroup.setOrderTables(orderTables);
+		tableGroup.setCreatedDate(createdDate);
 		return tableGroup;
 	}
 
-	public static TableGroup tableGroupWithId(List<OrderTable> orderTables, Long id) {
-		TableGroup tableGroup = tableGroup(orderTables);
+	public static TableGroup tableGroupWithId(List<OrderTable> orderTables, LocalDateTime createdDate, Long id) {
+		TableGroup tableGroup = tableGroup(orderTables, createdDate);
 		tableGroup.setId(id);
 		return tableGroup;
 	}

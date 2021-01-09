@@ -36,7 +36,7 @@ public class TableGroupRestControllerTest {
 		//given
 		OrderTable orderTable = TestDomainConstructor.orderTableWithId(null, 0, true, 1L);
 		OrderTable orderTable2 = TestDomainConstructor.orderTableWithId(null, 0, true, 2L);
-		TableGroup tableGroup = TestDomainConstructor.tableGroup(Arrays.asList(orderTable, orderTable2));
+		TableGroup tableGroup = TestDomainConstructor.tableGroup(Arrays.asList(orderTable, orderTable2), null);
 		boolean[] empties = {false, false};
 
 		//when-then
