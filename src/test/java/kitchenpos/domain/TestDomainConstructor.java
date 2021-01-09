@@ -3,8 +3,6 @@ package kitchenpos.domain;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.mockito.internal.matchers.Or;
-
 public class TestDomainConstructor {
 	public static Product product(String name, Integer price) {
 		Product product = new Product();
@@ -76,5 +74,17 @@ public class TestDomainConstructor {
 		OrderTable orderTable = orderTable(tableGroupId, numberOfGuests, empty);
 		orderTable.setId(id);
 		return orderTable;
+	}
+
+	public static TableGroup tableGroup(List<OrderTable> orderTables) {
+		TableGroup tableGroup = new TableGroup();
+		tableGroup.setOrderTables(orderTables);
+		return tableGroup;
+	}
+
+	public static TableGroup tableGroupWithId(List<OrderTable> orderTables, Long id) {
+		TableGroup tableGroup = tableGroup(orderTables);
+		tableGroup.setId(id);
+		return tableGroup;
 	}
 }

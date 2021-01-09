@@ -19,7 +19,7 @@ import kitchenpos.domain.TestDomainConstructor;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-@DisplayName("메뉴 Controller 테스트")
+@DisplayName("주문 테이블 Controller 테스트")
 public class TableRestControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
