@@ -49,9 +49,6 @@ public class ProductRestControllerTest {
 	@Test
 	@DisplayName("상품의 목록을 조회할 수 있다.")
 	void list() throws Exception {
-		//given
-		create();
-
 		//when-then
 		mockMvc.perform(get("/api/products"))
 			.andDo(print())
