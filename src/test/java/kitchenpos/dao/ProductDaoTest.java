@@ -36,18 +36,18 @@ public class ProductDaoTest {
 
 	@Test
 	@DisplayName("상품 등록 시, 이름이 없으면 DataIntegrityViolationException 을 throw 해야한다.")
-	void createWithoutName() {
+	void saveWithoutName() {
 		//given
-		Product nameNullProduct = TestDomainConstructor.product(null, 1000);
+		Product emptyNameProduct = TestDomainConstructor.product(null, 1000);
 
 		//when-then
-		assertThatThrownBy(() -> productDao.save(nameNullProduct))
+		assertThatThrownBy(() -> productDao.save(emptyNameProduct))
 			.isInstanceOf(DataIntegrityViolationException.class);
 	}
 
 	@Test
 	@DisplayName("상품 등록 시, 가격이 없으면 DataIntegrityViolationException 을 throw 해야한다.")
-	void createWithoutPrice() {
+	void saveWithoutPrice() {
 		//given
 		Product emptyPriceProduct = TestDomainConstructor.product("상품1", null);
 

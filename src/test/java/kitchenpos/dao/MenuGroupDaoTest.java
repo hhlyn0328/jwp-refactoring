@@ -34,12 +34,32 @@ public class MenuGroupDaoTest {
 
 	@Test
 	@DisplayName("메뉴그룹 등록 시, 이름이 없으면 DataIntegrityViolationException 을 throw 해야한다.")
-	void createWithoutName() {
+	void saveWithoutName() {
 		//given
-		MenuGroup nameNullMenuGroup = TestDomainConstructor.menuGroup(null);
+		MenuGroup emptyNameMenuGroup = TestDomainConstructor.menuGroup(null);
 
 		//when-then
-		assertThatThrownBy(() -> menuGroupDao.save(nameNullMenuGroup))
+		assertThatThrownBy(() -> menuGroupDao.save(emptyNameMenuGroup))
 			.isInstanceOf(DataIntegrityViolationException.class);
+	}
+
+	@Test
+	@DisplayName("등록된 메뉴그룹 Id로, 등록여부를 확인하면 true 를 반환한다.")
+	void existsByExistId() {
+		//given
+		Long existId = 1L;
+
+		//when-then
+		assertThat(menuGroupDao.existsById(existId)).isTrue();
+	}
+
+	@Test
+	@DisplayName("등록되지 않은 메뉴그룹 Id로, 등록여부를 확인하면 true 를 반환한다.")
+	void existsByNotExistId() {
+		//given
+		Long notExistId = 100L;
+
+		//when-then
+		assertThat(menuGroupDao.existsById(notExistId)).isFalse();
 	}
 }
