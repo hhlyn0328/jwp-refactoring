@@ -56,7 +56,7 @@ public class TestDomainConstructor {
 		return menuProduct;
 	}
 
-	public static MenuProduct menuProductWithId(Long menuId, Long productId, Long quantity, Long seq) {
+	public static MenuProduct menuProductWithSeq(Long menuId, Long productId, long quantity, Long seq) {
 		MenuProduct menuProduct = menuProduct(menuId, productId, quantity);
 		menuProduct.setSeq(seq);
 		return menuProduct;

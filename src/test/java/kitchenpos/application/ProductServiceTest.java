@@ -41,15 +41,21 @@ public class ProductServiceTest {
 	@Test
 	@DisplayName("상품 등록 시, 상품의 가격이 없으면 IllegalArgumentException을 throw 해야한다.")
 	void createPriceNull() {
-		Product priceNullProduct = TestDomainConstructor.product("상품1", null);
-		assertThatThrownBy(() -> productService.create(priceNullProduct))
+		//given
+		Product emptyPriceProduct = TestDomainConstructor.product("상품1", null);
+
+		//when-then
+		assertThatThrownBy(() -> productService.create(emptyPriceProduct))
 			.isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@Test
 	@DisplayName("상품 등록 시, 상품의 가격이 0 원 미만이면 IllegalArgumentException을 throw 해야한다.")
 	void createPriceLessThanZero() {
+		//given
 		Product negativePriceProduct = TestDomainConstructor.product("상품1", -200);
+
+		//when-then
 		assertThatThrownBy(() -> productService.create(negativePriceProduct))
 			.isInstanceOf(IllegalArgumentException.class);
 	}
