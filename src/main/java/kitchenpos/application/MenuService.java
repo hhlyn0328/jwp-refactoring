@@ -7,6 +7,10 @@ import kitchenpos.dao.ProductDao;
 import kitchenpos.domain.Menu;
 import kitchenpos.domain.MenuProduct;
 import kitchenpos.domain.Product;
+import kitchenpos.dto.MenuProductResponse;
+import kitchenpos.dto.MenuRequest;
+import kitchenpos.dto.MenuResponse;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuService {
@@ -35,7 +40,8 @@ public class MenuService {
     }
 
     @Transactional
-    public Menu create(final Menu menu) {
+    public MenuResponse create(final MenuRequest menuRequest) {
+        Menu menu = menuRequest.toMenu();
         final BigDecimal price = menu.getPrice();
 
         if (Objects.isNull(price) || price.compareTo(BigDecimal.ZERO) < 0) {
@@ -64,19 +70,26 @@ public class MenuService {
         final Long menuId = savedMenu.getId();
         final List<MenuProduct> savedMenuProducts = new ArrayList<>();
         for (final MenuProduct menuProduct : menuProducts) {
-            menuProduct.setMenuId(menuId);
+            menuProduct.changeMenu(menuId);
             savedMenuProducts.add(menuProductDao.save(menuProduct));
         }
-        savedMenu.setMenuProducts(savedMenuProducts);
+        savedMenu.changeProducts(savedMenuProducts);
 
-        return savedMenu;
+        return MenuResponse.of(savedMenu);
     }
 
-    public List<Menu> list() {
-        final List<Menu> menus = menuDao.findAll();
+    public List<MenuResponse> list() {
+        final List<MenuResponse> menus = menuDao.findAll()
+            .stream()
+            .map(MenuResponse::of)
+            .collect(Collectors.toList());
 
-        for (final Menu menu : menus) {
-            menu.setMenuProducts(menuProductDao.findAllByMenuId(menu.getId()));
+        for (final MenuResponse menu : menus) {
+            menu.changeProducts(menuProductDao.findAllByMenuId(menu.getId())
+                .stream()
+                .map(MenuProductResponse::of)
+                .collect(Collectors.toList())
+            );
         }
 
         return menus;
