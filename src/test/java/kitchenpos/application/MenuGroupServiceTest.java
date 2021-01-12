@@ -12,7 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import kitchenpos.dao.MenuGroupDao;
 import kitchenpos.domain.MenuGroup;
-import kitchenpos.domain.TestDomainConstructor;
+import kitchenpos.domain.TestFixture;
+import kitchenpos.dto.MenuGroupRequest;
+import kitchenpos.dto.MenuGroupResponse;
 
 @ExtendWith(MockitoExtension.class)
 public class MenuGroupServiceTest {
@@ -25,15 +27,13 @@ public class MenuGroupServiceTest {
 	@DisplayName("메뉴그룹을 등록할 수 있다.")
 	void create() {
 		//given
-		String name = "메뉴그룹1";
-		MenuGroup menuGroup = TestDomainConstructor.menuGroup(name);
-		MenuGroup savedMenuGroup = TestDomainConstructor.menuGroupWithId(name, 1L);
-		when(menuGroupDao.save(menuGroup)).thenReturn(savedMenuGroup);
+		when(menuGroupDao.save(any(MenuGroup.class))).thenReturn(TestFixture.메뉴그룹_등록됨);
 
 		//when
-		MenuGroup result = menuGroupService.create(menuGroup);
+		MenuGroupResponse result = menuGroupService.create(TestFixture.메뉴그룹_등록_REQUEST);
 
 		//then
-		assertThat(result).isEqualTo(savedMenuGroup);
+		assertThat(result.getId()).isEqualTo(TestFixture.메뉴그룹_신규_ID);
+		assertThat(result.getName()).isEqualTo(TestFixture.메뉴그룹_신규_NAME);
 	}
 }

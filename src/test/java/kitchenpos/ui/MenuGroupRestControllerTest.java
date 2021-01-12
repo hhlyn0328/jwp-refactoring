@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
 import kitchenpos.BaseControllerTest;
-import kitchenpos.domain.MenuGroup;
-import kitchenpos.domain.TestDomainConstructor;
+import kitchenpos.domain.TestFixture;
+import kitchenpos.dto.MenuGroupRequest;
 
 @DisplayName("메뉴 그룹 Controller 테스트")
 public class MenuGroupRestControllerTest extends BaseControllerTest {
@@ -19,17 +19,16 @@ public class MenuGroupRestControllerTest extends BaseControllerTest {
 	@DisplayName("메뉴그룹을 등록할 수 있다 - 메뉴그룹 등록 후, 등록된 메뉴그룹의 아이디를 포함한 정보를 반환한다.")
 	void create() throws Exception {
 		//given
-		String name = "메뉴그룹1";
-		MenuGroup menuGroup = TestDomainConstructor.menuGroup(name);
+		MenuGroupRequest request = TestFixture.메뉴그룹_등록_REQUEST;
 
 		//when-then
 		mockMvc.perform(post("/api/menu-groups")
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(objectMapper.writeValueAsString(menuGroup)))
+			.content(objectMapper.writeValueAsString(request)))
 			.andDo(print())
 			.andExpect(status().isCreated())
 			.andExpect(jsonPath("$.id").isNotEmpty())
-			.andExpect(jsonPath("$.name").value(name));
+			.andExpect(jsonPath("$.name").value(TestFixture.메뉴그룹_신규_NAME));
 	}
 
 	@Test

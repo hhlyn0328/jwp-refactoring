@@ -20,18 +20,6 @@ public class TestDomainConstructor {
 		return product;
 	}
 
-	public static MenuGroup menuGroup(String name) {
-		MenuGroup menuGroup = new MenuGroup();
-		menuGroup.setName(name);
-		return menuGroup;
-	}
-
-	public static MenuGroup menuGroupWithId(String name, Long Id) {
-		MenuGroup menuGroup = menuGroup(name);
-		menuGroup.setId(Id);
-		return menuGroup;
-	}
-
 	public static Menu menu(String name, Integer price, Long menuGroupId, List<MenuProduct> menuProducts) {
 		Menu menu = new Menu();
 		menu.setName(name);
