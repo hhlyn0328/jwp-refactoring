@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
 import kitchenpos.BaseControllerTest;
-import kitchenpos.domain.TestDomainConstructor;
-import kitchenpos.domain.Product;
+import kitchenpos.domain.TestFixture;
+import kitchenpos.dto.ProductRequest;
 
 @DisplayName("상품 Controller 테스트")
 public class ProductRestControllerTest extends BaseControllerTest {
@@ -19,19 +19,17 @@ public class ProductRestControllerTest extends BaseControllerTest {
 	@DisplayName("상품을 등록할 수 있다 - 상품 등록 후, 등록된 상품의 아이디를 포함한 정보를 반환한다.")
 	void create() throws Exception {
 		//given
-		String name = "상품1";
-		int price = 1000;
-		Product product = TestDomainConstructor.product(name, price);
+		ProductRequest request = TestFixture.상품_등록_REQUEST;
 
 		//when-then
 		mockMvc.perform(post("/api/products")
 			.contentType(MediaType.APPLICATION_JSON)
-			.content(objectMapper.writeValueAsString(product)))
+			.content(objectMapper.writeValueAsString(request)))
 			.andDo(print())
 			.andExpect(status().isCreated())
 			.andExpect(jsonPath("$.id").isNotEmpty())
-			.andExpect(jsonPath("$.name").value(name))
-			.andExpect(jsonPath("$.price").value(price));
+			.andExpect(jsonPath("$.name").value(TestFixture.상품_신규_NAME))
+			.andExpect(jsonPath("$.price").value(TestFixture.상품_신규_PRICE.longValue()));
 	}
 
 	@Test

@@ -5,21 +5,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class TestDomainConstructor {
-	public static Product product(String name, Integer price) {
-		Product product = new Product();
-		product.setName(name);
-		if (price != null) {
-			product.setPrice(BigDecimal.valueOf(price));
-		}
-		return product;
-	}
-
-	public static Product productWithId(String name, int price, Long id) {
-		Product product = product(name, price);
-		product.setId(id);
-		return product;
-	}
-
 	public static Menu menu(String name, Integer price, Long menuGroupId, List<MenuProduct> menuProducts) {
 		Menu menu = new Menu();
 		menu.setName(name);
@@ -38,17 +23,11 @@ public class TestDomainConstructor {
 	}
 
 	public static MenuProduct menuProduct(Long menuId, Long productId, long quantity) {
-		MenuProduct menuProduct = new MenuProduct();
-		menuProduct.setMenuId(menuId);
-		menuProduct.setProductId(productId);
-		menuProduct.setQuantity(quantity);
-		return menuProduct;
+		return new MenuProduct(menuId, productId, quantity);
 	}
 
 	public static MenuProduct menuProductWithSeq(Long menuId, Long productId, long quantity, Long seq) {
-		MenuProduct menuProduct = menuProduct(menuId, productId, quantity);
-		menuProduct.setSeq(seq);
-		return menuProduct;
+		return new MenuProduct(seq, menuId, productId, quantity);
 	}
 
 	public static OrderTable orderTable(Long tableGroupId, int numberOfGuests, boolean empty) {

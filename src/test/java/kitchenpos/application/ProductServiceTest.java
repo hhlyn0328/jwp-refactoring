@@ -12,7 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import kitchenpos.dao.ProductDao;
 import kitchenpos.domain.Product;
-import kitchenpos.domain.TestDomainConstructor;
+import kitchenpos.domain.TestFixture;
+import kitchenpos.dto.ProductResponse;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
@@ -25,38 +26,30 @@ public class ProductServiceTest {
 	@DisplayName("상품을 등록할 수 있다.")
 	void create() {
 		//given
-		String name = "상품1";
-		int price = 1000;
-		Product product = TestDomainConstructor.product(name, price);
-		Product savedProduct = TestDomainConstructor.productWithId(name, price, 1L);
-		when(productDao.save(product)).thenReturn(savedProduct);
+		when(productDao.save(any(Product.class))).thenReturn(TestFixture.상품_등록됨);
 
 		//when
-		Product result = productService.create(product);
+		ProductResponse result = productService.create(TestFixture.상품_등록_REQUEST);
 
 		//then
-		assertThat(result).isEqualTo(savedProduct);
+		assertThat(result.getId()).isEqualTo(TestFixture.상품_신규_ID);
+		assertThat(result.getName()).isEqualTo(TestFixture.상품_신규_NAME);
+		assertThat(result.getPrice()).isEqualTo(TestFixture.상품_신규_PRICE);
 	}
 
 	@Test
 	@DisplayName("상품 등록 시, 상품의 가격이 없으면 IllegalArgumentException을 throw 해야한다.")
 	void createPriceNull() {
-		//given
-		Product emptyPriceProduct = TestDomainConstructor.product("상품1", null);
-
 		//when-then
-		assertThatThrownBy(() -> productService.create(emptyPriceProduct))
+		assertThatThrownBy(() -> productService.create(TestFixture.상품_등록_가격없음_REQUEST))
 			.isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@Test
 	@DisplayName("상품 등록 시, 상품의 가격이 0 원 미만이면 IllegalArgumentException을 throw 해야한다.")
 	void createPriceLessThanZero() {
-		//given
-		Product negativePriceProduct = TestDomainConstructor.product("상품1", -200);
-
 		//when-then
-		assertThatThrownBy(() -> productService.create(negativePriceProduct))
+		assertThatThrownBy(() -> productService.create(TestFixture.상품_등록_가격음수_REQUEST))
 			.isInstanceOf(IllegalArgumentException.class);
 	}
 }
